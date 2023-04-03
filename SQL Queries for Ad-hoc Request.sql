@@ -193,7 +193,18 @@ from
 	   in the fiscal_year 2021? The final output contains these fields,
 			   division 
 			   product_code*/    
-               
+
+select division, product_code, concat(product,' (',variant,')') Product, total_sold_quantity, rank_order
+from
+(select division,p.product_code,product,
+		sum(sold_quantity) total_sold_quantity,variant,
+        rank() over(partition by division order by sum(sold_quantity) desc) rank_order
+from fact_sales_monthly ms inner join dim_product p using(product_code)
+where fiscal_year=2021
+group by product_code) a
+where rank_order in (1,2,3);
+
+-- Same error with group by clause
                
 SELECT division, product_code, CONCAT(product, ' (', variant, ')') Product, total_sold_quantity, rank_order
 FROM (
