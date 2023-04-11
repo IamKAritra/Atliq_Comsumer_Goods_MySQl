@@ -101,7 +101,7 @@ from
 where 
 	 pre_invoice_discount_pct > 
 			(select avg(pre_invoice_discount_pct) 
-            from fact_pre_invoice_deductions fp inner join dim_customer c using (customer_code)) 
+            from fact_pre_invoice_deductions fp ) 
             and market="india" and fiscal_year=2021
 order by 
 		pre_invoice_discount_pct desc
